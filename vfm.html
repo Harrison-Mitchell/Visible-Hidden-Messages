@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>HIDE</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<style>
+			*, *:before, *:after {box-sizing: border-box;}
+		
+			html, body {
+				margin: 0 auto;
+				max-width: 650px;
+				font-size: 18px;
+				color: #444;
+				padding: 0 0;
+				font-family: sans-serif;
+			}
+
+			textarea {
+				resize: none;
+				width: 100%;
+				height: 100px;
+				margin-top: 10px;
+			}
+
+			p {
+				width: 200px;
+				height: 80px;
+				background-color: #ddd;
+				display: block;
+				text-align: center;
+				margin: 10px auto;
+				font-size: 30px;
+				line-height: 80px;
+				cursor: pointer;
+			}
+			
+			p:hover {border-bottom: 4px solid black;}
+		</style>
+	</head>
+	<body>
+		<textarea placeholder="Encode..." id="en"></textarea>
+		<textarea placeholder="Hidden message..." id="hid"></textarea>
+		<textarea placeholder="Decode..." id="de"></textarea>
+		<p onclick="pleaseEncode()">Encode</p>
+		<p onclick="clearFields()">Clear</p>
+		<p onclick="pleaseDecode()">Decode</p>
+		<p onclick="pleaseCopy()">Copy</p>
+		<script>
+		
+			function encode (visible, invisible) {
+				encoded = ""
+				for (i = 0; i < invisible.length; i++) {
+					// Covert each character wishing to hide to binary padded to len 16
+					encoded += invisible[i].charCodeAt(0).toString(2).padStart(16, "0");
+				}
+				// Replace 0 and 1's with ZWS and ZWJ
+				encoded = encoded.replace(/0/g, "\u200B").replace(/1/g, "\u200D");
+				encoded = encoded + visible;
+				
+				return encoded;
+			}
+
+			function decode (visible) {
+				decoded = ""
+				// Scan for the end of the stored data
+				for (i = 0; i < visible.length; i++) {
+					if (visible[i] != "\u200B" && visible[i] != "\u200D") {
+						// Extract just the encoded data
+						toDecode = visible.substring(0, i);
+						break;
+					}
+				}
+				// Read in 16 char chuncks
+				for (i = 16; i < toDecode.length + 1; i+=16) {
+					// Convert the ZWS and ZWJ to 0 and 1 and read that binary to unicode chars
+					bin = toDecode.substring(i-16, i).replace(/\u200B/g, 0).replace(/\u200D/g, 1);
+					decoded += String.fromCharCode(parseInt(bin,2));
+				}
+				
+				return decoded;
+			}
+
+			textEncode = document.getElementById("en");
+			textHidden = document.getElementById("hid");
+			textDecode = document.getElementById("de");
+
+			function clearFields () {
+				textEncode.value = ""; textHidden.value = ""; textDecode.value = "";
+			}
+
+			function pleaseEncode () {
+				textDecode.value = encode(textEncode.value, textHidden.value);
+			}
+
+			function pleaseDecode () {
+				textEncode.value = textDecode.value;
+				textHidden.value = decode(textDecode.value);
+			}
+
+			function pleaseCopy () {
+				textDecode.select();
+				document.execCommand("copy");
+			}
+			
+		</script>
+	</body>
+</html>
