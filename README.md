@@ -20,3 +20,7 @@ Uses common UNIX utilities to convert files to hex and back again.
 * Recieve, decode, copy message to clipboard.
 * Use the data from your clipboard to reassemble the file:
 * `xclip -selection c -o | xxd -r -p > outFile`
+
+### Limitations
+* Some platforms may trim the data
+* Messages that are too long may cause you to go over the max message length of some platforms
