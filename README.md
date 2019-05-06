@@ -2,7 +2,7 @@
 Hide data invisibly. Uses zero width unicode characters to format data into binary which piggyback's onto a visible message.
 
 ### Live demo
-Found [here](harrisonm.com/vhm.html).
+Found [here](https://harrisonm.com/vhm.html).
 
 ### How it works
 Unicode has lots of characters for visual communication. English characters as seen here, Chinese characters, emojis, playing cards... There are also semantic only characters such as the right to left character used in cases such as displaying Arabic which reads from the right. Two of these semantic characters are the "Zero width space" which is used to signify a good place to split text to a new line. E.g pop<ZWS>ulation. A new line will be placed there with a dash to continue the word over the line. Another character is the "Zero width joiner" which does the reverse. I use these characters for the fact that they're zero width, i.e invisible. U+200B and U+200D are then used to represent binary (0 and 1) to store data.
