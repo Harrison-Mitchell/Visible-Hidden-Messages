@@ -4,6 +4,10 @@ Hide data invisibly. Uses zero width unicode characters to format data into bina
 ### Live demo
 Found [here](https://harrisonm.com/vhm.html).
 
+### Usage
+Put your visible component in the first box, then your hidden message in the second, hit encode and copy your final message from the third (or click copy).
+To decode, hit clear, paste your message in the third box and hit decode.
+
 ### How it works
 Unicode has lots of characters for visual communication. English characters as seen here, Chinese characters, emojis, playing cards... There are also semantic only characters such as the right to left character used in cases such as displaying Arabic which reads from the right. Two of these semantic characters are the "Zero width space" which is used to signify a good place to split text to a new line. E.g pop<ZWS>ulation. A new line will be placed there with a dash to continue the word over the line. Another character is the "Zero width joiner" which does the reverse. I use these characters for the fact that they're zero width, i.e invisible. U+200B and U+200D are then used to represent binary (0 and 1) to store data.
   
